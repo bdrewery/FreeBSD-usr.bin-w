@@ -126,6 +126,7 @@ static void		 usage(int);
 static int		 this_is_uptime(const char *s);
 
 char *fmt_argv(char **, char *, char *, size_t);	/* ../../bin/ps/fmt.c */
+const char* geoiplookup(const char*);
 
 int
 main(int argc, char *argv[])
@@ -140,8 +141,7 @@ main(int argc, char *argv[])
 	char buf[MAXHOSTNAMELEN], errbuf[_POSIX2_LINE_MAX];
 	char fn[MAXHOSTNAMELEN];
 	char *dot;
-	GeoIP *gip;
-	const char *country_name;
+	const char *country_name = NULL;
 
 	(void)setlocale(LC_ALL, "");
 	use_ampm = (*nl_langinfo(T_FMT_AMPM) != '\0');
@@ -405,18 +405,13 @@ main(int argc, char *argv[])
 				    dkp->ki_pid, ptr);
 			}
 		}
-		{
-			GeoIP *gip;
-			const char *country_name;
-			char *p0 = (p ? strsep((char **) &(p), ":") : "");
 
-			gip = GeoIP_new(GEOIP_STANDARD);
-
-			if(NULL == (country_name = GeoIP_country_name_by_name(gip, p0)))
-				country_name = ((*p0) ? p0 : "-");
-
+		country_name = geoiplookup(host_buf);
+		if (country_name)
 			p = country_name;
-		}
+		else
+			p = "-";
+
 		(void)printf("%-*.*s %-*.*s %-*.*s ",
 		    W_DISPUSERSIZE, W_DISPUSERSIZE, ep->utmp.ut_user,
 		    W_DISPLINESIZE, W_DISPLINESIZE,
@@ -517,6 +512,24 @@ usage(int wcmd)
 	else
 		(void)fprintf(stderr, "usage: uptime\n");
 	exit(1);
+}
+
+const char* geoiplookup(const char *name) {
+	const char *country_name = NULL;
+
+	int gip_type = strchr(name, ':') ? GEOIP_COUNTRY_EDITION_V6 : GEOIP_COUNTRY_EDITION;
+	if (GeoIP_db_avail(gip_type)) {
+		GeoIP *gip = GeoIP_open_type(gip_type, GEOIP_STANDARD);
+
+		if (gip) {
+			int country_id = gip_type == GEOIP_COUNTRY_EDITION ? GeoIP_id_by_name(gip, name) : GeoIP_id_by_name_v6(gip, name);
+			if (country_id > 0)
+				country_name = GeoIP_country_name[country_id];
+			GeoIP_delete(gip);
+		}
+	}
+
+	return country_name;
 }
 
 static int 
