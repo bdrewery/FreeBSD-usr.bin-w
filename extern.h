@@ -31,7 +31,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)extern.h	8.1 (Berkeley) 6/6/93
- * $FreeBSD: src/usr.bin/w/extern.h,v 1.5.24.1.2.1 2010/02/10 00:26:20 kensmith Exp $
+ * $FreeBSD: src/usr.bin/w/extern.h,v 1.5.24.1.4.1 2010/12/21 17:10:29 kensmith Exp $
  */
 
 

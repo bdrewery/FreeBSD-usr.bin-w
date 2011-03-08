@@ -33,7 +33,7 @@
 
 #include <sys/cdefs.h>
 
-__FBSDID("$FreeBSD: src/usr.bin/w/w.c,v 1.60.2.1.2.1 2010/02/10 00:26:20 kensmith Exp $");
+__FBSDID("$FreeBSD: src/usr.bin/w/w.c,v 1.60.2.2.2.1 2010/12/21 17:10:29 kensmith Exp $");
 
 #ifndef lint
 static const char copyright[] =
@@ -158,7 +158,8 @@ main(int argc, char *argv[])
 	}
 
 	dropgid = 0;
-	memf = nlistf = _PATH_DEVNULL;
+	memf = _PATH_DEVNULL;
+	nlistf = NULL;
 	while ((ch = getopt(argc, argv, p)) != -1)
 		switch (ch) {
 		case 'd':
