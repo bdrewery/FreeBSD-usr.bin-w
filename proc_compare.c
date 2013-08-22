@@ -38,7 +38,7 @@ static char sccsid[] = "@(#)proc_compare.c	8.2 (Berkeley) 9/23/93";
 #endif
 
 #include <sys/cdefs.h>
-__FBSDID("$FreeBSD: src/usr.bin/w/proc_compare.c,v 1.9.30.1.6.1 2010/12/21 17:09:25 kensmith Exp $");
+__FBSDID("$FreeBSD: releng/8.4/usr.bin/w/proc_compare.c 128231 2004-04-14 09:34:17Z bde $");
 
 #include <sys/param.h>
 #include <sys/proc.h>

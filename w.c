@@ -33,7 +33,7 @@
 
 #include <sys/cdefs.h>
 
-__FBSDID("$FreeBSD: src/usr.bin/w/w.c,v 1.60.10.3.4.1 2010/12/21 17:09:25 kensmith Exp $");
+__FBSDID("$FreeBSD: releng/8.4/usr.bin/w/w.c 247517 2013-03-01 01:02:44Z jhb $");
 
 #ifndef lint
 static const char copyright[] =
@@ -127,7 +127,7 @@ static struct stat	*ttystat(char *, int);
 static void		 usage(int);
 static int		 this_is_uptime(const char *s);
 
-char *fmt_argv(char **, char *, int);	/* ../../bin/ps/fmt.c */
+char *fmt_argv(char **, char *, char *, size_t);	/* ../../bin/ps/fmt.c */
 
 int
 main(int argc, char *argv[])
@@ -325,7 +325,7 @@ main(int argc, char *argv[])
 			continue;
 		}
 		ep->args = fmt_argv(kvm_getargv(kd, ep->kp, argwidth),
-		    ep->kp->ki_comm, MAXCOMLEN);
+		    ep->kp->ki_comm, NULL, MAXCOMLEN);
 		if (ep->args == NULL)
 			err(1, NULL);
 	}
@@ -392,7 +392,7 @@ main(int argc, char *argv[])
 				const char *ptr;
 
 				ptr = fmt_argv(kvm_getargv(kd, dkp, argwidth),
-				    dkp->ki_comm, MAXCOMLEN);
+				    dkp->ki_comm, NULL, MAXCOMLEN);
 				if (ptr == NULL)
 					ptr = "-";
 				(void)printf("\t\t%-9d %s\n",
