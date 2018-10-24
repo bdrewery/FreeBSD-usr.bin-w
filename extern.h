@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)extern.h	8.1 (Berkeley) 6/6/93
- * $FreeBSD$
+ * $FreeBSD: releng/11.2/usr.bin/w/extern.h 331722 2018-03-29 02:50:57Z eadler $
  */
 
 extern	int use_ampm;
